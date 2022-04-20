@@ -2,27 +2,35 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
-}
+directive @goField(
+  forceResolver: Boolean
+  name: String
+) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+# create cutom scalar type
+scalar Any
 
 type User {
   id: ID!
   name: String!
+  email: String!
+}
+
+input NewUser {
+  name: String!
+  email: String!
+  password: String!
+}
+
+type Auth {
+  login(email: String!, password: String!): Any! @goField(forceResolver: true)
+  register(newUser: NewUser!): Any! @goField(forceResolver: true)
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
+  user(id: ID!): User! @goField(forceResolver: true)
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  auth: Auth! @goField(forceResolver: true)
 }
