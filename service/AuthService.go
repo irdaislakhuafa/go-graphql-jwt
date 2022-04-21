@@ -11,9 +11,7 @@ import (
 
 func UserRegister(ctx context.Context, newUser model.NewUser) (interface{}, error) {
 	_, err := UserGetByEmail(ctx, newUser.Email)
-	if err == gorm.ErrRecordNotFound {
-		return nil, err
-	} else if err != nil {
+	if err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
 
