@@ -8,12 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
+var gdb *gorm.DB
+
 type Database struct {
 	DbCon *gorm.DB
 }
 
-func (db *Database) GetDB() *gorm.DB {
-	return db.DbCon
+func GetDB() *gorm.DB {
+	return gdb
 }
 
 func (db *Database) Init() {
@@ -34,5 +36,6 @@ func (db *Database) Init() {
 		log.Fatalln("Error when open database connection: " + err.Error())
 	} else {
 		log.Println("Success connected to database")
+		gdb = db.DbCon
 	}
 }
