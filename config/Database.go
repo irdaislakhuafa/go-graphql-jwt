@@ -1,9 +1,39 @@
 package config
 
-import "gorm.io/gorm"
+import (
+	"fmt"
+	"log"
 
-var db *gorm.DB
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+)
 
-func GetDB() *gorm.DB {
-	return db
+type Database struct {
+	DbCon *gorm.DB
+}
+
+func (db *Database) GetDB() *gorm.DB {
+	return db.DbCon
+}
+
+func (db *Database) Init() {
+	var err error
+	log.Println("initilaizing database connection")
+	const (
+		username string = "root"
+		password string = ""
+		hostname string = "localhost"
+		port     string = "3306"
+		database string = "test"
+	)
+	databaseUrl := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?multiStatements=true&parseTime=true", username, password, hostname, port, database)
+
+	log.Println("Open database connection to \"" + database + "\"")
+	db.DbCon, err = gorm.Open(mysql.Open(databaseUrl), &gorm.Config{})
+	if err != nil {
+		log.Println("Error when open database connection: " + err.Error())
+		return
+	} else {
+		log.Println("Success connected to database")
+	}
 }
