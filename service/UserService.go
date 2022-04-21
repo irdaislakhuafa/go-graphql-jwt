@@ -20,7 +20,10 @@ func UserCreate(ctx context.Context, newUser model.NewUser) (*entity.User, error
 	}
 
 	user := entity.User{
-		ID: uuid.New().String(),
+		ID:       uuid.New().String(),
+		Name:     newUser.Name,
+		Email:    newUser.Email,
+		Password: newUser.Password,
 	}
 
 	if err := db.Model(user).Create(&user).Error; err != nil {
@@ -29,3 +32,5 @@ func UserCreate(ctx context.Context, newUser model.NewUser) (*entity.User, error
 
 	return &user, nil
 }
+
+// func UserGetById(ctx context.Context, id string) ()
