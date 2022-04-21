@@ -5,7 +5,6 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/irdaislakhuafa/go-graphql-jwt/graph/generated"
 	"github.com/irdaislakhuafa/go-graphql-jwt/graph/model"
@@ -36,7 +35,7 @@ func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error
 }
 
 func (r *queryResolver) Protected(ctx context.Context) (string, error) {
-	panic(fmt.Errorf("not implemented"))
+	return "Success", nil
 }
 
 // Auth returns generated.AuthResolver implementation.
