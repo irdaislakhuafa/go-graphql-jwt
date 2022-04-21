@@ -21,13 +21,13 @@ func AuthMiddleware(next http.Handler) http.Handler {
 		bearer := "Bearer "
 		token := auth[len(bearer):]
 
-		validate, err := service.JwtValidate(context.Background(), token)
-		if err != nil || !validate.Valid {
+		jwtToken, err := service.JwtValidate(context.Background(), token)
+		if err != nil || !jwtToken.Valid {
 			http.Error(writer, "Invalid token", http.StatusForbidden)
 			return
 		}
 
-		claims, _ := validate.Claims.(*service.JwtCustomClaims)
+		claims, _ := jwtToken.Claims.(*service.JwtCustomClaims)
 		ctx := context.WithValue(request.Context(), authString("auth"), claims)
 		request = request.WithContext(ctx)
 		next.ServeHTTP(writer, request)
