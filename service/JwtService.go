@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"errors"
 	"log"
 	"time"
 
@@ -41,4 +42,24 @@ func JwtGenerate(ctx context.Context, userID string) (string, error) {
 	}
 
 	return token, nil
+}
+
+func JwtValidate(ctx context.Context, token string) (*jwt.Token, error) {
+	log.Println("Create signing function")
+	signingFunction := func(t *jwt.Token) (interface{}, error) {
+		if _, isOk := t.Method.(*jwt.SigningMethodHMAC); !isOk {
+			return nil, errors.New("error while signing method for token")
+		}
+		return keySecret, nil
+	}
+
+	log.Println("Parse JWT claims")
+	jwtToken, err := jwt.ParseWithClaims(token, &JwtCustomClaims{}, signingFunction)
+	if err != nil {
+		log.Println("Failed while parse JWT claims")
+		return nil, err
+	}
+
+	log.Println("Success parse JWT claims")
+	return jwtToken, nil
 }
