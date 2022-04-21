@@ -43,3 +43,14 @@ func UserGetById(ctx context.Context, id string) (*entity.User, error) {
 
 	return &user, nil
 }
+
+func UserGetByEmail(ctx context.Context, email string) (*entity.User, error) {
+	db := config.GetDB()
+	user := entity.User{}
+
+	if err := db.Model(user).Where("LOWER(email) LIKE LOWER(?)", email).Take(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
