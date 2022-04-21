@@ -5,6 +5,7 @@ package graph
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/irdaislakhuafa/go-graphql-jwt/graph/generated"
 	"github.com/irdaislakhuafa/go-graphql-jwt/graph/model"
@@ -26,14 +27,16 @@ func (r *mutationResolver) Auth(ctx context.Context) (*model.Auth, error) {
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
 	user, err := service.UserGetById(ctx, id)
 	modelUser := model.User{
-		ID:       user.ID,
-		Name:     user.Name,
-		Email:    user.Email,
-		Password: user.Password,
+		ID:    user.ID,
+		Name:  user.Name,
+		Email: user.Email,
 	}
 
 	return &modelUser, err
+}
 
+func (r *queryResolver) Protected(ctx context.Context) (string, error) {
+	panic(fmt.Errorf("not implemented"))
 }
 
 // Auth returns generated.AuthResolver implementation.
