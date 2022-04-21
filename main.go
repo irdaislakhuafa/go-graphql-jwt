@@ -9,6 +9,7 @@ import (
 	"github.com/irdaislakhuafa/go-graphql-jwt/config"
 	"github.com/irdaislakhuafa/go-graphql-jwt/graph"
 	"github.com/irdaislakhuafa/go-graphql-jwt/graph/generated"
+	"github.com/irdaislakhuafa/go-graphql-jwt/migration"
 )
 
 func main() {
@@ -17,6 +18,8 @@ func main() {
 
 	database := config.Database{}
 	database.Init()
+
+	migration.EnableMigration(true)
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 
