@@ -35,3 +35,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(handlerFunc)
 }
+
+func CtxValue(ctx context.Context) *service.JwtCustomClaims {
+	value, _ := ctx.Value(authString("auth")).(*service.JwtCustomClaims)
+	return value
+}
