@@ -33,4 +33,13 @@ func UserCreate(ctx context.Context, newUser model.NewUser) (*entity.User, error
 	return &user, nil
 }
 
-// func UserGetById(ctx context.Context, id string) ()
+func UserGetById(ctx context.Context, id string) (*entity.User, error) {
+	db := config.GetDB()
+	user := entity.User{}
+
+	if err := db.Model(user).Find(&user).Where("id = ?", id).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
