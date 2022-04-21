@@ -21,7 +21,7 @@ func (db *Database) Init() {
 	log.Println("initilaizing database connection")
 	const (
 		username string = "root"
-		password string = ""
+		password string = "p"
 		hostname string = "localhost"
 		port     string = "3306"
 		database string = "test"
@@ -31,8 +31,7 @@ func (db *Database) Init() {
 	log.Println("Open database connection to \"" + database + "\"")
 	db.DbCon, err = gorm.Open(mysql.Open(databaseUrl), &gorm.Config{})
 	if err != nil {
-		log.Println("Error when open database connection: " + err.Error())
-		return
+		log.Fatalln("Error when open database connection: " + err.Error())
 	} else {
 		log.Println("Success connected to database")
 	}

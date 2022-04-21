@@ -15,6 +15,9 @@ func main() {
 	options := config.Config{}
 	options.EnableFlags(true)
 
+	database := config.Database{}
+	database.Init()
+
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
