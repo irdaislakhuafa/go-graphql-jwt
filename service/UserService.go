@@ -10,7 +10,7 @@ import (
 	"github.com/irdaislakhuafa/go-graphql-jwt/tools"
 )
 
-func UserCreate(ctx context.Context, newUser model.NewUser) (*model.User, error) {
+func UserCreate(ctx context.Context, newUser model.NewUser) (*entity.User, error) {
 	var err error
 	db := config.GetDB()
 
@@ -18,7 +18,14 @@ func UserCreate(ctx context.Context, newUser model.NewUser) (*model.User, error)
 	if err != nil {
 		return nil, err
 	}
-	user := &entity.User{
+
+	user := entity.User{
 		ID: uuid.New().String(),
 	}
+
+	if err := db.Model(user).Create(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }
