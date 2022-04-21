@@ -7,6 +7,8 @@ directive @goField(
   name: String
 ) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
 
+directive @auth on FIELD_DEFINITION
+
 # create cutom scalar type
 scalar Any
 
@@ -29,6 +31,9 @@ type Auth {
 
 type Query {
   user(id: ID!): User! @goField(forceResolver: true)
+
+  # add protected resource
+  protected: String! @goField(forceResolver: true) @auth
 }
 
 type Mutation {

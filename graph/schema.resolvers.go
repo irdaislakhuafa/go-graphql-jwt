@@ -5,26 +5,35 @@ package graph
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/irdaislakhuafa/go-graphql-jwt/graph/generated"
 	"github.com/irdaislakhuafa/go-graphql-jwt/graph/model"
+	"github.com/irdaislakhuafa/go-graphql-jwt/service"
 )
 
 func (r *authResolver) Login(ctx context.Context, obj *model.Auth, email string, password string) (interface{}, error) {
-	panic(fmt.Errorf("not implemented"))
+	return service.UserLogin(ctx, email, password)
 }
 
 func (r *authResolver) Register(ctx context.Context, obj *model.Auth, newUser model.NewUser) (interface{}, error) {
-	panic(fmt.Errorf("not implemented"))
+	return service.UserRegister(ctx, newUser)
 }
 
 func (r *mutationResolver) Auth(ctx context.Context) (*model.Auth, error) {
-	panic(fmt.Errorf("not implemented"))
+	return &model.Auth{}, nil
 }
 
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	user, err := service.UserGetById(ctx, id)
+	modelUser := model.User{
+		ID:       user.ID,
+		Name:     user.Name,
+		Email:    user.Email,
+		Password: user.Password,
+	}
+
+	return &modelUser, err
+
 }
 
 // Auth returns generated.AuthResolver implementation.
